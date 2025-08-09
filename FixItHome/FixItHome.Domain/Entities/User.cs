@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace FixItHome.Domain.Entities
 {
-    internal class User
+    public class User
     {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public virtual ICollection<Guide> Guides { get; set; } = new List<Guide>();
+
+
     }
 }
