@@ -30,12 +30,12 @@ namespace FixItHome.Infrastructure.Repositories
         public async Task AddGuideEquipmentAsync(Domain.Entities.GuideEquipment guide)
         {
             context.GuideEquipments.Add(guide);
-            await context.SaveChangesAsync();
+            
         }
         public async Task UpdateGuideEquipmentAsync(Domain.Entities.GuideEquipment guide)
         {
             context.GuideEquipments.Update(guide);
-            await context.SaveChangesAsync();
+            
         }
         public async Task DeleteGuideEquipmentAsync(int id)
         {
@@ -43,7 +43,7 @@ namespace FixItHome.Infrastructure.Repositories
             if (guide != null)
             {
                 context.GuideEquipments.Remove(guide);
-                await context.SaveChangesAsync();
+                
             }
 
         }

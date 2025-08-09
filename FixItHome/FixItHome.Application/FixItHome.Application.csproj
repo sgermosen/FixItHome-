@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Contracts\" />
-    <Folder Include="DTOs\" />
     <Folder Include="MappingProfiles\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FixItHome.Infrastructure\FixItHome.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

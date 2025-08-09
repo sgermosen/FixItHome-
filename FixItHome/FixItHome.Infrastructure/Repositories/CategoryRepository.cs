@@ -25,21 +25,18 @@ namespace FixItHome.Infrastructure.Repositories
         }
         public async Task AddCategoryAsync(Domain.Entities.Category guide)
         {
-            context.Categories.Add(guide);
-            await context.SaveChangesAsync();
+            context.Categories.Add(guide); 
         }
         public async Task UpdateCategoryAsync(Domain.Entities.Category guide)
         {
-            context.Categories.Update(guide);
-            await context.SaveChangesAsync();
+            context.Categories.Update(guide); 
         }
         public async Task DeleteCategoryAsync(int id)
         {
             var guide = await context.Categories.FindAsync(id);
             if (guide != null)
             {
-                context.Categories.Remove(guide);
-                await context.SaveChangesAsync();
+                context.Categories.Remove(guide); 
             }
 
         }

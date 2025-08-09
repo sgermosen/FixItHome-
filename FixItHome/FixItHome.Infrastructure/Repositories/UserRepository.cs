@@ -26,12 +26,12 @@ namespace FixItHome.Infrastructure.Repositories
         public async Task AddUserAsync(Domain.Entities.User guide)
         {
             context.Users.Add(guide);
-            await context.SaveChangesAsync();
+            
         }
         public async Task UpdateUserAsync(Domain.Entities.User guide)
         {
             context.Users.Update(guide);
-            await context.SaveChangesAsync();
+            
         }
         public async Task DeleteUserAsync(int id)
         {
@@ -39,7 +39,7 @@ namespace FixItHome.Infrastructure.Repositories
             if (guide != null)
             {
                 context.Users.Remove(guide);
-                await context.SaveChangesAsync();
+                
             }
 
         }
