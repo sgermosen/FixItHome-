@@ -1,4 +1,4 @@
-@FixItHome.API_HostAddress = http://localhost:5096
+@FixItHome.API_HostAddress = http://localhost:5214
 
 GET {{FixItHome.API_HostAddress}}/weatherforecast/
 Accept: application/json

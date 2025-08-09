@@ -1,24 +1,25 @@
-﻿namespace FixItHome.Infrastructure.Repositories
+﻿using FixItHome.Domain.Entities;
+using FixItHome.Infrastructure.Repositories;
+
+namespace FixItHome.Application.Service
 {
     public class CategoryService
     {
-        private readonly CategoryRepository repo;
         private readonly UnitOfWork unitOfWork;
 
-        public CategoryService(CategoryRepository repo, UnitOfWork unitOfWork)
+        public CategoryService( UnitOfWork unitOfWork)
         {
-            this.repo = repo;
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Domain.Entities.CategoryDto>> GetAllCategoriesAsync()
+        public async Task<List<Application.DTOs.CategoryDto>> GetAllCategoriesAsync()
         {
-            var categories = await repo.GetAllCategoriesAsync();
-            return categories.Select(c => new Domain.Entities.CategoryDto
+            var categories = await unitOfWork.Categories.GetAllCategoriesAsync();
+            return categories.Select(c => new Application.DTOs.CategoryDto
             {
                 Id = c.Id,
                 Name = c.Name,
                 Description = c.Description,
-                Guides = c.Guides.Select(g => new Domain.Entities.GuideDto
+                Guides = c.Guides.Select(g => new Application.DTOs.GuideDto
                 {
                     Id = g.Id,
                     Title = g.Title,
@@ -27,19 +28,19 @@
                 }).ToList()
             }).ToList();
         }
-        public async Task<Domain.Entities.CategoryDto> GetCategoryByIdAsync(int id)
+        public async Task<Application.DTOs.CategoryDto> GetCategoryByIdAsync(int id)
         {
             var category = await unitOfWork.Categories.GetCategoryByIdAsync(id);
             if (category == null)
             {
                 return null;
             }
-            return new Domain.Entities.CategoryDto
+            return new Application.DTOs.CategoryDto
             {
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                Guides = category.Guides.Select(g => new Domain.Entities.GuideDto
+                Guides = category.Guides.Select(g => new Application.DTOs.GuideDto
                 {
                     Id = g.Id,
                     Title = g.Title,
@@ -48,9 +49,9 @@
                 }).ToList()
             };
         }
-        public async Task AddCategoryAsync(Domain.Entities.CategoryDto category)
+        public async Task AddCategoryAsync(Application.DTOs.CategoryDto category)
         {
-            var entity = new Domain.Entities.Category
+            var entity = new Category
             {
                 Name = category.Name,
                 Description = category.Description,
@@ -58,7 +59,7 @@
             await unitOfWork.Categories.AddCategoryAsync(entity);
         }
 
-        public async Task UpdateCategoryAsync(Domain.Entities.CategoryDto category)
+        public async Task UpdateCategoryAsync(Application.DTOs.CategoryDto category)
         {
             var entity = await unitOfWork.Categories.GetCategoryByIdAsync(category.Id);
             entity.Name = category.Name;

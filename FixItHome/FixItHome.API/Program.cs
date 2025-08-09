@@ -1,8 +1,40 @@
+using FixItHome.Application.Service;
+using FixItHome.Infrastructure.Data;
+using FixItHome.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<FixItHomeApplicationContext>(o =>
+    o.UseSqlServer(builder.Configuration.GetConnectionString("MainConnection")));
+
+ 
+
+builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+builder.Services.AddScoped<UnitOfWork>();
+
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<EquipmentRepository>();
+builder.Services.AddScoped<GuideEquipmentRepository>();
+builder.Services.AddScoped<GuideRepository>();
+builder.Services.AddScoped<UserRepository>();
+
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<EquipmentService>();
+builder.Services.AddScoped<GuideEquipmentService>();
+builder.Services.AddScoped<GuideService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -12,30 +44,11 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapControllers();
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

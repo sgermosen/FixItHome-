@@ -1,4 +1,7 @@
-﻿namespace FixItHome.Infrastructure.Repositories
+﻿using FixItHome.Domain.Entities;
+using FixItHome.Infrastructure.Repositories;
+
+namespace FixItHome.Application.Service
 {
     public class UserService
     {
@@ -8,16 +11,16 @@
         {
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Domain.Entities.UserDto>> GetAllUsersAsync()
+        public async Task<List<Application.DTOs.UserDto>> GetAllUsersAsync()
         {
             var entities = await unitOfWork.Users.GetAllUsersAsync();
 
-            return entities.Select(e => new Domain.Entities.UserDto
+            return entities.Select(e => new Application.DTOs.UserDto
             {
                 Id = e.Id,
                 Email = e.Email,
                 Name = e.Name,
-                Guides = e.Guides.Select(g => new Domain.Entities.GuideDto
+                Guides = e.Guides.Select(g => new Application.DTOs.GuideDto
                 {
                     Id = g.Id,
                     Title = g.Title,
@@ -29,7 +32,7 @@
             }).ToList();
         }
 
-        public async Task<Domain.Entities.UserDto> GetUserByIdAsync(int id)
+        public async Task<Application.DTOs.UserDto> GetUserByIdAsync(int id)
         {
             var entity = await unitOfWork.Users.GetUserByIdAsync(id);
             if (entity == null)
@@ -37,12 +40,12 @@
                 return null;
             }
 
-            return new Domain.Entities.UserDto
+            return new Application.DTOs.UserDto
             {
                 Id = entity.Id,
                 Email = entity.Email,
                 Name = entity.Name,
-                Guides = entity.Guides.Select(g => new Domain.Entities.GuideDto
+                Guides = entity.Guides.Select(g => new Application.DTOs.GuideDto
                 {
                     Id = g.Id,
                     Title = g.Title,
@@ -54,9 +57,9 @@
             };
         }
 
-        public async Task AddUserAsync(Domain.Entities.UserDto dto)
+        public async Task AddUserAsync(Application.DTOs.UserDto dto)
         {
-            var entity = new Domain.Entities.User
+            var entity = new  User
             { 
                 Email = dto.Email,
                 Name = dto.Name, 
@@ -66,7 +69,7 @@
             await unitOfWork.Users.AddUserAsync(entity);
         }
 
-        public async Task UpdateUserAsync(Domain.Entities.UserDto dto)
+        public async Task UpdateUserAsync(Application.DTOs.UserDto dto)
         {
             var entity = await unitOfWork.Users.GetUserByIdAsync(dto.Id);
             entity.Email = dto.Email;

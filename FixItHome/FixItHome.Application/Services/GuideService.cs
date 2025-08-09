@@ -1,4 +1,7 @@
-﻿namespace FixItHome.Infrastructure.Repositories
+﻿using FixItHome.Domain.Entities;
+using FixItHome.Infrastructure.Repositories;
+
+namespace FixItHome.Application.Service
 {
     public class GuideService
     {
@@ -8,11 +11,11 @@
         {
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Domain.Entities.GuideDto>> GetAllGuidesAsync()
+        public async Task<List<Application.DTOs.GuideDto>> GetAllGuidesAsync()
         {
             var entities = await unitOfWork.Guides.GetAllGuidesAsync();
 
-            return entities.Select(e => new Domain.Entities.GuideDto
+            return entities.Select(e => new Application.DTOs.GuideDto
             {
                 Id = e.Id,
                 Title = e.Title,
@@ -23,7 +26,7 @@
 
         }
 
-        public async Task<Domain.Entities.GuideDto> GetGuideByIdAsync(int id)
+        public async Task<Application.DTOs.GuideDto> GetGuideByIdAsync(int id)
         {
             var entity = await unitOfWork.Guides.GetGuideByIdAsync(id);
             if (entity == null)
@@ -31,7 +34,7 @@
                 return null;
             }
 
-            return new Domain.Entities.GuideDto
+            return new Application.DTOs.GuideDto
             {
                 Id = entity.Id,
                 Title = entity.Title,
@@ -40,9 +43,9 @@
             };
         }
 
-        public async Task AddGuideAsync(Domain.Entities.GuideDto dto)
+        public async Task AddGuideAsync(Application.DTOs.GuideDto dto)
         {
-            var entity = new Domain.Entities.Guide
+            var entity = new Guide
             {
 
                 Id = dto.Id,
@@ -53,7 +56,7 @@
             await unitOfWork.Guides.AddGuideAsync(entity);
         }
 
-        public async Task UpdateGuideAsync(Domain.Entities.GuideDto dto)
+        public async Task UpdateGuideAsync(Application.DTOs.GuideDto dto)
         {
             var entity = await unitOfWork.Guides.GetGuideByIdAsync(dto.Id);
              

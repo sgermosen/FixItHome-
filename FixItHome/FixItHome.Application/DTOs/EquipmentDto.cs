@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FixItHome.Domain.Entities
+namespace FixItHome.Application.DTOs
 {
     public class EquipmentDto
     {

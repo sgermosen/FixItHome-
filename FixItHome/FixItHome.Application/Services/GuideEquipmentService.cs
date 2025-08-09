@@ -1,4 +1,7 @@
-﻿namespace FixItHome.Infrastructure.Repositories
+﻿using FixItHome.Domain.Entities;
+using FixItHome.Infrastructure.Repositories;
+
+namespace FixItHome.Application.Service
 {
     public class GuideEquipmentService
     {
@@ -8,16 +11,16 @@
         {
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Domain.Entities.GuideEquipmentDto>> GetAllGuideEquipmentsAsync(int guideId)
+        public async Task<List<Application.DTOs.GuideEquipmentDto>> GetAllGuideEquipmentsAsync(int guideId)
         {
             var entities = await unitOfWork.GuideEquipments.GetAllGuideEquipmentsFromGuideIdAsync(guideId);
 
-            return entities.Select(e => new Domain.Entities.GuideEquipmentDto
+            return entities.Select(e => new Application.DTOs.GuideEquipmentDto
             {
                 Id = e.Id,
                 GuideId = e.GuideId,
                 EquipmentId = e.EquipmentId,
-                Equipment = new Domain.Entities.EquipmentDto
+                Equipment = new Application.DTOs.EquipmentDto
                 {
                     Id = e.Equipment.Id,
                     Name = e.Equipment.Name,
@@ -26,7 +29,7 @@
                     Warnings = e.Equipment.Warnings,
                     ImageUrl = e.Equipment.ImageUrl
                 },
-                Guide = new Domain.Entities.GuideDto
+                Guide = new Application.DTOs.GuideDto
                 {
                     Id = e.Guide.Id,
                     Title = e.Guide.Title,
@@ -36,7 +39,7 @@
             }).ToList(); 
         }
 
-        public async Task<Domain.Entities.GuideEquipmentDto> GetGuideEquipmentByIdAsync(int id)
+        public async Task<Application.DTOs.GuideEquipmentDto> GetGuideEquipmentByIdAsync(int id)
         {
             var entity = await unitOfWork.GuideEquipments.GetGuideEquipmentByIdAsync(id);
             if (entity == null)
@@ -44,12 +47,12 @@
                 return null;
             }
 
-            return new Domain.Entities.GuideEquipmentDto
+            return new Application.DTOs.GuideEquipmentDto
             {
                 Id = entity.Id,
                 GuideId = entity.GuideId,
                 EquipmentId = entity.EquipmentId,
-                Equipment = new Domain.Entities.EquipmentDto
+                Equipment = new Application.DTOs.EquipmentDto
                 {
                     Id = entity.Equipment.Id,
                     Name = entity.Equipment.Name,
@@ -58,7 +61,7 @@
                     Warnings = entity.Equipment.Warnings,
                     ImageUrl = entity.Equipment.ImageUrl
                 },
-                Guide = new Domain.Entities.GuideDto
+                Guide = new Application.DTOs.GuideDto
                 {
                     Id = entity.Guide.Id,
                     Title = entity.Guide.Title,
@@ -68,9 +71,9 @@
             };
         }
 
-        public async Task AddGuideEquipmentAsync(Domain.Entities.GuideEquipmentDto dto)
+        public async Task AddGuideEquipmentAsync(Application.DTOs.GuideEquipmentDto dto)
         {
-            var entity = new Domain.Entities.GuideEquipment
+            var entity = new  GuideEquipment
             {
                GuideId = dto.GuideId,
                 EquipmentId = dto.EquipmentId,
@@ -78,7 +81,7 @@
             await unitOfWork.GuideEquipments.AddGuideEquipmentAsync(entity);
         }
 
-        public async Task UpdateGuideEquipmentAsync(Domain.Entities.GuideEquipmentDto dto)
+        public async Task UpdateGuideEquipmentAsync(Application.DTOs.GuideEquipmentDto dto)
         {
             var entity = await unitOfWork.GuideEquipments.GetGuideEquipmentByIdAsync(dto.Id);
             entity.GuideId = dto.GuideId;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FixItHome.Domain.Entities
+namespace FixItHome.Application.DTOs
 {
     public class GuideDto
     {
@@ -15,7 +15,7 @@ namespace FixItHome.Domain.Entities
         public int CategoryId { get; set; }   
         public int UserId { get; set; }
         public virtual CategoryDto Category { get; set; }
-        public virtual User User { get; set; }
+        public virtual UserDto User { get; set; }
         public virtual ICollection<GuideEquipmentDto> GuideEquipments { get; set; } = new List<GuideEquipmentDto>();
     }
 }

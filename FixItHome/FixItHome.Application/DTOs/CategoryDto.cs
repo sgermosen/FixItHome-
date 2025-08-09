@@ -1,4 +1,4 @@
-﻿namespace FixItHome.Domain.Entities
+﻿namespace FixItHome.Application.DTOs
 {
     public class CategoryDto
     {

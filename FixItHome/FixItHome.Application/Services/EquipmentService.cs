@@ -1,4 +1,7 @@
-﻿namespace FixItHome.Infrastructure.Repositories
+﻿using FixItHome.Domain.Entities;
+using FixItHome.Infrastructure.Repositories;
+
+namespace FixItHome.Application.Service
 {
     public class EquipmentService
     {
@@ -8,11 +11,11 @@
         {
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Domain.Entities.EquipmentDto>> GetAllEquipmentsAsync()
+        public async Task<List<Application.DTOs.EquipmentDto>> GetAllEquipmentsAsync()
         {
             var entities = await unitOfWork.Equipments.GetAllEquipmentsAsync();
 
-            return entities.Select(e => new Domain.Entities.EquipmentDto
+            return entities.Select(e => new Application.DTOs.EquipmentDto
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -20,7 +23,7 @@
             }).ToList();
         }
 
-        public async Task<Domain.Entities.EquipmentDto> GetEquipmentByIdAsync(int id)
+        public async Task<Application.DTOs.EquipmentDto> GetEquipmentByIdAsync(int id)
         {
             var entity = await unitOfWork.Equipments.GetEquipmentByIdAsync(id);
             if (entity == null)
@@ -28,7 +31,7 @@
                 return null;
             }
 
-            return new Domain.Entities.EquipmentDto
+            return new Application.DTOs.EquipmentDto
             {
                 Id = entity.Id,
                 Name = entity.Name,
@@ -36,9 +39,9 @@
             };
         }
 
-        public async Task AddEquipmentAsync(Domain.Entities.EquipmentDto dto)
+        public async Task AddEquipmentAsync(Application.DTOs.EquipmentDto dto)
         {
-            var entity = new Domain.Entities.Equipment
+            var entity = new  Equipment
             {
                 Name = dto.Name,
                 Description = dto.Description,
@@ -49,7 +52,7 @@
             await unitOfWork.Equipments.AddEquipmentAsync(entity);
         }
 
-        public async Task UpdateEquipmentAsync(Domain.Entities.EquipmentDto dto)
+        public async Task UpdateEquipmentAsync(Application.DTOs.EquipmentDto dto)
         {
             var entity = await unitOfWork.Equipments.GetEquipmentByIdAsync(dto.Id);
             entity.Name = dto.Name;
